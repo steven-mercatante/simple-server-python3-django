@@ -1,0 +1,23 @@
+- name: Check if `default` virtual environment exists
+  stat: path={{ default_virtualenv_dir }}
+  register: check_default_virtualenv_dir
+
+- name: Create `default` virtual environment
+  script: scripts/create_virtualenv.sh
+  when: check_default_virtualenv_dir.stat.exists == False
+
+- name: Activate `default` virtual environment and install pip dependencies
+  script: scripts/activate_default_venv_install_pip_deps.sh
+
+- name: Tell server to activate `default` virtual environment when starting up
+  lineinfile:
+    dest=~/.bashrc
+    state=present
+    line="source {{ virtualenvs_dir }}/default/bin/activate"
+
+- name: Create `runserver` alias
+  lineinfile:
+    dest=~/.bash_aliases
+    create=yes
+    state=present
+    line="alias runserver=\"python3 manage.py runserver 0.0.0.0:8000\""

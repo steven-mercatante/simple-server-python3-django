@@ -1,0 +1,6 @@
+- name: Set up server
+  hosts: all
+  vars_files:
+    - vars/main.yml
+  roles:
+    - setup

@@ -1,0 +1,2 @@
+default_virtualenv_dir: ~/.virtualenvs/default
+virtualenvs_dir: ~/.virtualenvs
